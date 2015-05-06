@@ -1,5 +1,6 @@
 name: NoCheatPE
 main: TruDan\NoCheatPE\NoCheatPEPlugin
 version: 1.0
+api: 1.0.0
 description: Anti-Hacks / Anti-Cheat plugin for Minecraft Pocket Edition server, PocketMine
 author: TruDan
