@@ -1,0 +1,10 @@
+#NoCheatPE
+
+#Here you can disable/enable allowed cheats:
+
+#Don't edit this, for EXTERNAL use ONLY!
+version: 1.0.0
+
+allow-fly: false
+
+allow-speed-mods: false
