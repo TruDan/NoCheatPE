@@ -15,4 +15,8 @@ namespace TruDan\NoCheatPE;
 
 class NoCheatPlayer {
 
+	public function onTick($currentTicks) {
+		// Do stuff!
+	}
+
 }
