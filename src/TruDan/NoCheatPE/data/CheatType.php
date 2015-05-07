@@ -9,6 +9,8 @@
  * Time: 17:42
  */
 
+namespace TruDan\NoCheatPE\data;
+
 class CheatType {
 
 	const PLAYER_MOVEMENT_EXCESS_SPEED		= 1;

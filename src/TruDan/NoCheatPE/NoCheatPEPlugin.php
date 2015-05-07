@@ -14,6 +14,8 @@ namespace TruDan\NoCheatPE;
 
 use pocketmine\Player;
 use pocketmine\plugin\PluginBase;
+use TruDan\NoCheatPE\hooks\AntiSpeedDetection;
+use TruDan\NoCheatPE\hooks\DetectionHook;
 use TruDan\NoCheatPE\listeners\PlayerListener;
 use TruDan\NoCheatPE\tasks\TickTask;
 
@@ -23,6 +25,11 @@ class NoCheatPEPlugin extends PluginBase {
 	 * @var NoCheatPEPlugin
 	 */
 	private static $instance;
+
+	/**
+	 * @var DetectionHook[]
+	 */
+	private static $hooks = [];
 
 	/**
 	 * @var PlayerListener
@@ -59,15 +66,45 @@ class NoCheatPEPlugin extends PluginBase {
 		$this->tickTask = new TickTask($this);
 		$this->getServer()->getScheduler()->scheduleRepeatingTask($this->tickTask, 1);
 
+		// Load default hooks
+		self::registerHook(AntiSpeedDetection::class);
 
 	}
 
 	public function onDisable() {
-
 		// Save config?
 
 
+	}
 
+	/**
+	 * Register a Detection hook with NoCheatPE.
+	 *
+	 * Returns true on success.
+	 *
+	 * @param $hookClass
+	 * @return bool
+	 */
+	public static function registerHook($hookClass) {
+		$class = new \ReflectionClass($hookClass);
+
+		if(is_a($hookClass, DetectionHook::class) && !$class->isAbstract()) {
+			preg_match("/([^\\\]+\\\)*([^\\\]+)$/", $hookClass, $matches);
+			$className = end($matches);
+
+			self::$hooks[strtolower($className)] = $hookClass;
+
+			self::getInstance()->getLogger()->info("Registered Detection Hook: " . $className);
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * @return DetectionHook[]
+	 */
+	public static function getHooks() {
+		return self::$hooks;
 	}
 
 	/**

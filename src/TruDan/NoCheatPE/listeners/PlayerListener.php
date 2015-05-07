@@ -34,13 +34,6 @@ class PlayerListener implements Listener {
 	}
 
 	/**
-	 * @param PlayerJoinEvent $event
-	 */
-	public function onPlayerJoin(PlayerJoinEvent $event) {
-		$this->getPlugin()->addCheatPlayer($event->getPlayer());
-	}
-
-	/**
 	 * @return NoCheatPEPlugin
 	 */
 	private function getPlugin() {
@@ -48,7 +41,16 @@ class PlayerListener implements Listener {
 	}
 
 	/**
+	 * @param PlayerJoinEvent $event
+	 * @priority MONITOR
+	 */
+	public function onPlayerJoin(PlayerJoinEvent $event) {
+		$this->getPlugin()->addCheatPlayer($event->getPlayer());
+	}
+
+	/**
 	 * @param PlayerQuitEvent $event
+	 * @priority MONITOR
 	 */
 	public function onPlayerQuit(PlayerQuitEvent $event) {
 		$this->getPlugin()->removeCheatPlayer($event->getPlayer());
@@ -56,6 +58,7 @@ class PlayerListener implements Listener {
 
 	/**
 	 * @param PlayerKickEvent $event
+	 * @priority MONITOR
 	 */
 	public function onPlayerKick(PlayerKickEvent $event) {
 		$this->getPlugin()->removeCheatPlayer($event->getPlayer());
