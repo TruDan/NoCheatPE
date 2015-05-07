@@ -32,6 +32,11 @@ class NoCheatPEPlugin extends PluginBase {
 	private static $hooks = [];
 
 	/**
+	 * @var string[]
+	 */
+	private static $enabledHooks = [];
+
+	/**
 	 * @var PlayerListener
 	 */
 	private $playerListener;
@@ -57,6 +62,15 @@ class NoCheatPEPlugin extends PluginBase {
 		self::$instance = $this;
 
 		// Load/save default config
+		$detections = $this->getConfig()->get("detections", []);
+		if(!empty($detections) && is_array($detections)) {
+			// Check validity. Who knows what people may put.
+			foreach($detections as $detection) {
+				if(is_string($detection)) {
+					self::$enabledHooks[] = strtolower($detection);
+				}
+			}
+		}
 
 		// Register listeners
 		$this->playerListener = new PlayerListener($this);
@@ -80,6 +94,8 @@ class NoCheatPEPlugin extends PluginBase {
 	/**
 	 * Register a Detection hook with NoCheatPE.
 	 *
+	 * Note: The hook will only be registered if enabled in NoCheatPE config.yml
+	 *
 	 * Returns true on success.
 	 *
 	 * @param $hookClass
@@ -92,8 +108,11 @@ class NoCheatPEPlugin extends PluginBase {
 			preg_match("/([^\\\]+\\\)*([^\\\]+)$/", $hookClass, $matches);
 			$className = end($matches);
 
-			self::$hooks[strtolower($className)] = $hookClass;
+			if(!in_array(strtolower(str_ireplace("Detection", "", $className)), self::$enabledHooks)) {
+				self::getInstance()->getLogger()->debug("Attempted to register detection hook '" . $className . "' but is not enabled.");
+			}
 
+			self::$hooks[strtolower($className)] = $hookClass;
 			self::getInstance()->getLogger()->info("Registered Detection Hook: " . $className);
 			return true;
 		}

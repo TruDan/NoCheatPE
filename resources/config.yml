@@ -1,10 +1,37 @@
-#NoCheatPE
-
-#Here you can disable/enable allowed cheats:
-
-#Don't edit this, for EXTERNAL use ONLY!
+#
+#  _   _        _____ _                _   _____  ______
+# | \ | |      / ____| |              | | |  __ \|  ____|
+# |  \| | ___ | |    | |__   ___  __ _| |_| |__) | |__
+# | . ` |/ _ \| |    | '_ \ / _ \/ _` | __|  ___/|  __|
+# | |\  | (_) | |____| | | |  __/ (_| | |_| |    | |____
+# |_| \_|\___/ \_____|_| |_|\___|\__,_|\__|_|    |______|
+#
+# Here you can disable/enable allowed cheats:
+#
+# Don't edit this, for EXTERNAL use ONLY!
 version: 1.0.0
 
-allow-fly: false
+#
+# Detections to be enabled by default.
+# If custom plugins are added with custom Anti-Cheat hooks, they will need to be added here.
+# Available options: AntiSpeed
+detections:
+ - AntiSpeed
 
-allow-speed-mods: false
+# Default actions to take on each detections
+# Example layout:
+#  - hook: AntiSpeed (From the above list)
+#    action: revert (ONE of the following: revert, kick, command)
+#
+# For each action type, if it requires extra configuration, the config should be the same name as the action. e.g. for a command action:
+#  - hook: AntiSpeed
+#    action: command
+#    command: *command here*
+#
+# Variables available:
+# %player%      - The name of the player
+# %severity%    - The severity level of the cheat
+defaultActions:
+ - hook: AntiSpeed
+   action: command
+   command: kick %player%
