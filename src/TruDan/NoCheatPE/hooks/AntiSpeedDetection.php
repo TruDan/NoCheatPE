@@ -42,6 +42,10 @@ class AntiSpeedDetection extends DetectionHook {
 		$prev = $this->previousPosition;
 		$current = $this->getPlayer()->getPosition();
 
+		if(!($prev instanceof Position)) {
+			return;
+		}
+
 		if($prev->getLevel() != $current->getLevel()) {
 			return;
 		}

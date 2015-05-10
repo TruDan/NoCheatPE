@@ -14,7 +14,9 @@ namespace TruDan\NoCheatPE\hooks;
 
 
 use pocketmine\Server;
+use TruDan\NoCheatPE\data\CheatType;
 use TruDan\NoCheatPE\events\PlayerHackEvent;
+use TruDan\NoCheatPE\NoCheatPEPlugin;
 use TruDan\NoCheatPE\NoCheatPlayer;
 
 abstract class DetectionHook {
@@ -49,6 +51,8 @@ abstract class DetectionHook {
 			// This shouldn't happen, but in-case of bad plugins that have their own hooks!
 			return;
 		}
+
+		NoCheatPEPlugin::getInstance()->getLogger()->debug("PlayerHackEvent: " . $this->getPlayer()->getName() . " - " . CheatType::getName($cheatType) . " VL " . $severity);
 
 		$ev = new PlayerHackEvent($this->getPlayer(), $cheatType, $severity);
 		Server::getInstance()->getPluginManager()->callEvent($ev);

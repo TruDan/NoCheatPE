@@ -39,7 +39,7 @@ class NoCheatPlayer {
 		if(count($hooks) > 0) {
 			foreach($hooks as $hookClass) {
 				/** @var DetectionHook $hook */
-				$hook = new $hookClass($player);
+				$hook = new $hookClass($this);
 				$this->hooks[] = $hook;
 			}
 		}

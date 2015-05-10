@@ -37,4 +37,19 @@ class CheatType {
 	const PLAYER_ATTACK_FORCE_FIELD			= 18;
 	const PLAYER_ATTACK_SELF				= 19;
 
+	public static function getName($cheatTypeValue) {
+		$class = new \ReflectionClass(self::class);
+		$constants = $class->getConstants();
+
+		$constName = null;
+		foreach($constants as $name => $value) {
+			if($value == $cheatTypeValue) {
+				$constName = $name;
+				break;
+			}
+		}
+
+		return $constName;
+	}
+
 }

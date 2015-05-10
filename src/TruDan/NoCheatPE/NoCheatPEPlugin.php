@@ -61,7 +61,11 @@ class NoCheatPEPlugin extends PluginBase {
 	public function onEnable() {
 		self::$instance = $this;
 
+
 		// Load/save default config
+		$this->saveDefaultConfig();
+		$this->reloadConfig();
+
 		$detections = $this->getConfig()->get("detections", []);
 		if(!empty($detections) && is_array($detections)) {
 			// Check validity. Who knows what people may put.
@@ -104,7 +108,7 @@ class NoCheatPEPlugin extends PluginBase {
 	public static function registerHook($hookClass) {
 		$class = new \ReflectionClass($hookClass);
 
-		if(is_a($hookClass, DetectionHook::class) && !$class->isAbstract()) {
+		if(is_a($hookClass, DetectionHook::class, true) && !$class->isAbstract()) {
 			preg_match("/([^\\\]+\\\)*([^\\\]+)$/", $hookClass, $matches);
 			$className = end($matches);
 
@@ -113,9 +117,11 @@ class NoCheatPEPlugin extends PluginBase {
 			}
 
 			self::$hooks[strtolower($className)] = $hookClass;
-			self::getInstance()->getLogger()->info("Registered Detection Hook: " . $className);
+			self::getInstance()->getLogger()->info("Detection Hook Enabled: " . $className);
 			return true;
 		}
+
+		self::getInstance()->getLogger()->debug("Attempted to register detection hook '" . $hookClass . "' but it is invalid.");
 		return false;
 	}
 
