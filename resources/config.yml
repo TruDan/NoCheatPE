@@ -8,10 +8,9 @@
 #
 # Here you can disable/enable allowed cheats:
 #
-# Don't edit this, for EXTERNAL use ONLY!
+# Don't edit this, for INTERNAL use ONLY!
 version: 1.0.0
 
-#
 # Detections to be enabled by default.
 # If custom plugins are added with custom Anti-Cheat hooks, they will need to be added here.
 # Available options: AntiSpeed
